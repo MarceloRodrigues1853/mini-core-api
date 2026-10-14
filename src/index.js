@@ -1,19 +1,19 @@
-// Importação da função de validação
-const { registerUser } = require("./service");
-const { listUsers } = require("./repository");
-
-// Testes de validação
-const user1 = { name: "Marcelo", age: 25, email: "marcelo@email.com" };
-const user1Duplicate = { name: "Marcelo Clone", age: 28, email: "marcelo@email.com" };
-const user2 = { name: "Ana", age: 16, email: "ana@email.com" };
-const user3 = { name: "Carlos", age: 30, email: "carlos@email.com" };
-
-// Testes de cadastro
-console.log("1. Cadastrando Marcelo:", registerUser(user1));
-console.log("2. Tentando duplicar e-mail:", registerUser(user1Duplicate));
-console.log("3. Tentando cadastrar menor de idade:", registerUser(user2));
-console.log("4. Cadastrando Carlos:", registerUser(user3));
-
-// Lista de todos os usuários no banco
-console.log("\n--- Usuários salvos no banco ---");
-console.log(listUsers());
+// Importação das funções do service
+const {
+    registerUser,
+    getUsersByMinAge,
+    getPublicUsers,
+  } = require("./service");
+  
+  // Cadastrando 3 usuários válidos no banco
+  registerUser({ name: "Marcelo", age: 25, email: "marcelo@email.com" });
+  registerUser({ name: "Carlos", age: 30, email: "carlos@email.com" });
+  registerUser({ name: "Beatriz", age: 19, email: "beatriz@email.com" });
+  
+  // Exibe o relatório público (DTO sem age e sem createdAt)
+  console.log("--- 1. Relatório Público (DTO sem age e sem createdAt) ---");
+  console.log(getPublicUsers());
+  
+  // Exibe os usuários com 25 anos ou mais
+  console.log("\n--- 2. Usuários com 25 anos ou mais ---");
+  console.log(getUsersByMinAge(25));

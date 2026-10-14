@@ -5,15 +5,7 @@ const crypto = require("crypto");
 const { validateUser } = require("./validator");
 
 // Importação das funções de repositório
-const { saveUser, findUserByEmail } = require("./repository");
-
-// Gera um ID aleatório
-const id = crypto.randomUUID(); // Gera algo como "3b12f1df-5232-4804-897e-917bf397618a"
-
-// Gera a data e hora atual
-const now = new Date().toISOString; // Gera ex: "2026-10-14T17:58:00.000Z"
-
-
+const { saveUser, findUserByEmail, listUsers } = require("./repository");
 
 // Função para cadastrar um usuário
 function registerUser(user) {
@@ -45,6 +37,31 @@ function registerUser(user) {
     return {success: true, user: newUser };
 }
 
+// Função para buscar usuários com idade maior ou igual a minAge
+function getUsersByMinAge(minAge) {
+    // Lista todos os usuários
+    const users = listUsers();
+    
+    // Filtra os usuários com idade maior ou igual a minAge
+    const filteredUsers = users.filter(user => user.age >= minAge);
+    
+    // Retorna os usuários filtrados
+    return filteredUsers;
+}
+
+function getPublicUsers() {
+    // Lista todos os usuários
+    const users = listUsers();
+
+    // Transforma os usuários em um array de objetos com as propriedades id, name e email
+    return users.map(user => {
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        };
+    });
+}
 
 // Exportação da função de criação de usuário
-module.exports = { registerUser };
+module.exports = { registerUser, getUsersByMinAge, getPublicUsers };
