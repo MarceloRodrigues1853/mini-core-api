@@ -1,38 +1,19 @@
 // Importação da função de validação
-const { validateUser } = require("./validator");
-const { saveUser, findUserByEmail, listUsers } = require("./repository");
+const { registerUser } = require("./service");
+const { listUsers } = require("./repository");
 
 // Testes de validação
 const user1 = { name: "Marcelo", age: 25, email: "marcelo@email.com" };
+const user1Duplicate = { name: "Marcelo Clone", age: 28, email: "marcelo@email.com" };
 const user2 = { name: "Ana", age: 16, email: "ana@email.com" };
 const user3 = { name: "Carlos", age: 30, email: "carlos@email.com" };
 
-// Função para cadastrar um usuário
-function register(user) {
-    // Validação do usuário
-    const validation = validateUser(user);
-    // Se o usuário não for válido, exibe o erro e retorna
-    if (!validation.valid) {
-        console.log(`Erro ao cadastrar ${user.name}: ${validation.error}`);
-        return;
-    }
-
-    // Salva o usuário no repositório
-    saveUser(user);
-    // Exibe mensagem de sucesso
-    console.log(`Usuário ${user.name} cadastrado com sucesso`);
-}
-
-// Cadastra os usuários
-register(user1);
-register(user2);
-register(user3);
-
+// Testes de cadastro
+console.log("1. Cadastrando Marcelo:", registerUser(user1));
+console.log("2. Tentando duplicar e-mail:", registerUser(user1Duplicate));
+console.log("3. Tentando cadastrar menor de idade:", registerUser(user2));
+console.log("4. Cadastrando Carlos:", registerUser(user3));
 
 // Lista de todos os usuários no banco
-console.log("\n--- Lista de todos os usuários no banco ---");
+console.log("\n--- Usuários salvos no banco ---");
 console.log(listUsers());
-
-// Busca um usuário pelo email
-console.log("\n--- Buscando usuário por e-mail ---");
-console.log(findUserByEmail("marcelo@email.com"));
